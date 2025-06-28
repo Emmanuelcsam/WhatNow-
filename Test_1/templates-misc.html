@@ -1,0 +1,257 @@
+<!-- templates/404.html -->
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - Event Discovery{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+        <div class="card">
+            <div class="card-body p-5">
+                <i class="fas fa-map-marked-alt fa-5x text-muted mb-4"></i>
+                <h1 class="display-1">404</h1>
+                <h3 class="mb-4">Oops! Page Not Found</h3>
+                <p class="text-muted mb-4">
+                    The page you're looking for seems to have wandered off the map.
+                </p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-home me-2"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- templates/500.html -->
+{% extends "base.html" %}
+
+{% block title %}Server Error - Event Discovery{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+        <div class="card">
+            <div class="card-body p-5">
+                <i class="fas fa-exclamation-triangle fa-5x text-warning mb-4"></i>
+                <h1 class="display-1">500</h1>
+                <h3 class="mb-4">Server Error</h3>
+                <p class="text-muted mb-4">
+                    Something went wrong on our end. We're working to fix it!
+                </p>
+                <p class="text-muted mb-4">
+                    Please try again in a few moments.
+                </p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-home me-2"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- templates/privacy.html -->
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - Event Discovery{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-5">
+                <h1 class="mb-4">Privacy Policy</h1>
+                <p class="text-muted">Last updated: {{ current_date }}</p>
+                
+                <section class="mb-5">
+                    <h3>1. Information We Collect</h3>
+                    <p>
+                        Event Discovery collects minimal information necessary to provide our service:
+                    </p>
+                    <ul>
+                        <li><strong>Location Data:</strong> We detect your approximate location using your IP address to find events near you. This data is temporarily cached and not permanently stored.</li>
+                        <li><strong>Personal Information:</strong> Your first name, last name, and activity preferences are used only for the current search session.</li>
+                        <li><strong>Technical Data:</strong> Basic analytics such as page views and error logs to improve our service.</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>2. How We Use Your Information</h3>
+                    <p>We use the collected information solely to:</p>
+                    <ul>
+                        <li>Find relevant events in your area</li>
+                        <li>Personalize event recommendations based on your interests</li>
+                        <li>Improve our service quality and user experience</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>3. Data Retention</h3>
+                    <p>
+                        We follow a minimal data retention policy:
+                    </p>
+                    <ul>
+                        <li>Search session data is retained for up to 24 hours</li>
+                        <li>Location cache is retained for up to 7 days</li>
+                        <li>We do not create user accounts or profiles</li>
+                        <li>We do not sell or share your data with third parties</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>4. Third-Party Services</h3>
+                    <p>
+                        We integrate with the following services:
+                    </p>
+                    <ul>
+                        <li><strong>EventBrite API:</strong> To fetch event information</li>
+                        <li><strong>OpenStreetMap:</strong> To display event locations on maps</li>
+                        <li><strong>IP Geolocation Services:</strong> To determine your approximate location</li>
+                    </ul>
+                    <p>
+                        These services have their own privacy policies, and we encourage you to review them.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>5. Security</h3>
+                    <p>
+                        We implement industry-standard security measures including:
+                    </p>
+                    <ul>
+                        <li>HTTPS encryption for all data transmission</li>
+                        <li>Secure session management</li>
+                        <li>Regular security updates and monitoring</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>6. Your Rights</h3>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access any data we have about your current session</li>
+                        <li>Request deletion of your session data</li>
+                        <li>Opt-out of our service at any time</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>7. Contact Us</h3>
+                    <p>
+                        If you have any questions about this Privacy Policy, please contact us at:
+                        <br>
+                        <strong>Email:</strong> privacy@eventdiscovery.app
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- templates/terms.html -->
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - Event Discovery{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-5">
+                <h1 class="mb-4">Terms of Service</h1>
+                <p class="text-muted">Last updated: {{ current_date }}</p>
+                
+                <section class="mb-5">
+                    <h3>1. Acceptance of Terms</h3>
+                    <p>
+                        By using Event Discovery, you agree to these Terms of Service. If you do not agree, please do not use our service.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>2. Service Description</h3>
+                    <p>
+                        Event Discovery is a free service that helps users find local events based on their interests and location. We aggregate event information from various sources and provide personalized recommendations.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>3. User Responsibilities</h3>
+                    <p>You agree to:</p>
+                    <ul>
+                        <li>Provide accurate information when using our service</li>
+                        <li>Use the service for lawful purposes only</li>
+                        <li>Not attempt to disrupt or compromise our service</li>
+                        <li>Respect the intellectual property rights of others</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>4. Disclaimer of Warranties</h3>
+                    <p>
+                        Event Discovery is provided "as is" without warranties of any kind. We do not guarantee:
+                    </p>
+                    <ul>
+                        <li>The accuracy or completeness of event information</li>
+                        <li>The availability of events listed</li>
+                        <li>Uninterrupted or error-free service</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>5. Limitation of Liability</h3>
+                    <p>
+                        Event Discovery and its operators shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from:
+                    </p>
+                    <ul>
+                        <li>Use or inability to use our service</li>
+                        <li>Attendance at any events found through our service</li>
+                        <li>Any errors or omissions in event information</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>6. Third-Party Content</h3>
+                    <p>
+                        We display event information from third-party sources. We are not responsible for the accuracy, legality, or content of these events. Users should verify event details independently.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>7. Intellectual Property</h3>
+                    <p>
+                        All content on Event Discovery, except third-party event information, is our property or licensed to us. You may not reproduce, distribute, or create derivative works without permission.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>8. Changes to Terms</h3>
+                    <p>
+                        We reserve the right to modify these terms at any time. Continued use of our service after changes constitutes acceptance of the new terms.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>9. Governing Law</h3>
+                    <p>
+                        These terms are governed by the laws of the jurisdiction in which Event Discovery operates, without regard to conflict of law principles.
+                    </p>
+                </section>
+                
+                <section class="mb-5">
+                    <h3>10. Contact Information</h3>
+                    <p>
+                        For questions about these Terms of Service, contact us at:
+                        <br>
+                        <strong>Email:</strong> legal@eventdiscovery.app
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
