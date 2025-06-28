@@ -1,0 +1,17 @@
+# Core web framework
+Flask
+
+# API integrations
+openai
+requests
+
+# Web scraping and parsing
+beautifulsoup4
+lxml
+
+# Text-to-speech
+edge-tts
+
+# HTTP client
+aiohttp
+urllib3

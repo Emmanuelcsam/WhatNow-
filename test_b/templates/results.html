@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Events for You</h2>
+<div class="row">
+    <div class="col-md-8">
+        {% for event in events %}
+        <div class="card event-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.name }}</h5>
+                <p class="card-text">
+                    <i class="fas fa-clock"></i> {{ event.date }} at {{ event.time }}<br>
+                    <i class="fas fa-map-marker"></i> {{ event.venue }}<br>
+                    <i class="fas fa-tag"></i> {{ event.category }}<br>
+                    <i class="fas fa-star"></i> Relevance: {{ event.relevance }}
+                </p>
+                <a href="{{ event.url }}" target="_blank" class="btn btn-primary">View Event</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-4">
+        <div id="map" style="height: 400px;"></div>
+    </div>
+</div>
+{% endblock %}
