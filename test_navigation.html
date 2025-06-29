@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigation Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .fade-in { animation: fadeIn 0.8s ease-in; }
+        .slide-left { animation: slideLeft 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideLeft { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        .text-indigo { color: #4f46e5; }
+        .btn-indigo { background-color: #4f46e5; color: white; }
+        .btn-indigo:hover { background-color: #4338ca; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>WhatNowAI Navigation Test</h1>
+        <div class="alert alert-info">
+            <h4>Testing Instructions:</h4>
+            <ol>
+                <li>Click "Test Navigation" to see if buttons work</li>
+                <li>Check console for any errors</li>
+                <li>Verify each step transitions properly</li>
+            </ol>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Step Progress:</h3>
+                <ul id="progress-list" class="list-group">
+                    <li class="list-group-item">Step 1: <span id="step1-status">Not started</span></li>
+                    <li class="list-group-item">Step 2: <span id="step2-status">Not started</span></li>
+                    <li class="list-group-item">Step 3: <span id="step3-status">Not started</span></li>
+                    <li class="list-group-item">Step 4: <span id="step4-status">Not started</span></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h3>Console Output:</h3>
+                <div id="console-output" class="border p-3" style="height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+                    Ready to test...
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <button class="btn btn-primary" onclick="testNavigation()">Test Navigation</button>
+            <button class="btn btn-secondary" onclick="clearConsole()">Clear Console</button>
+            <a href="/home" class="btn btn-success">Go to Real App</a>
+        </div>
+    </div>
+
+    <script>
+        const consoleOutput = document.getElementById('console-output');
+        
+        // Override console.log to display in our output
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.join(' ');
+            consoleOutput.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        // Override console.error
+        const originalError = console.error;
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            const message = args.join(' ');
+            consoleOutput.innerHTML += `<div style="color: red;">${new Date().toLocaleTimeString()}: ERROR: ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        function clearConsole() {
+            consoleOutput.innerHTML = 'Console cleared...';
+        }
+        
+        async function testNavigation() {
+            console.log('Starting navigation test...');
+            
+            try {
+                // Test if main.js functions are accessible
+                console.log('Checking if window.getCurrentLocation exists:', typeof window.getCurrentLocation);
+                console.log('Checking if window.startProcessing exists:', typeof window.startProcessing);
+                
+                // Update progress
+                document.getElementById('step1-status').textContent = 'Testing...';
+                
+                // Test basic DOM queries
+                console.log('Testing DOM elements...');
+                const testElements = [
+                    'step-1', 'step-2', 'step-3', 'step-4',
+                    'next-btn-1', 'next-btn-2', 'next-btn-3',
+                    'get-location-btn'
+                ];
+                
+                for (const id of testElements) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        console.log(`✓ Found element: ${id}`);
+                    } else {
+                        console.error(`✗ Missing element: ${id}`);
+                    }
+                }
+                
+                console.log('Navigation test complete!');
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>

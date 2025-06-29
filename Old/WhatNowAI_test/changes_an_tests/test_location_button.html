@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Button Test - Williamsburg, VA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Location Detection Test</h1>
+    <p>Testing location detection for Williamsburg, VA</p>
+    
+    <button id="testLocationBtn">Test Location Detection</button>
+    
+    <div id="status" class="status"></div>
+    <div id="result" class="result" style="display: none;"></div>
+    
+    <h2>Test Results:</h2>
+    <ul id="testResults"></ul>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const testResults = document.getElementById('testResults');
+        const testBtn = document.getElementById('testLocationBtn');
+        
+        function addTestResult(test, success, message) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${test}:</strong> ${success ? '✅' : '❌'} ${message}`;
+            testResults.appendChild(li);
+        }
+        
+        async function testLocation() {
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Starting location detection test...';
+            testResults.innerHTML = '';
+            
+            // Test 1: Browser Geolocation
+            try {
+                statusDiv.textContent = 'Testing browser geolocation...';
+                
+                if (!navigator.geolocation) {
+                    addTestResult('Browser Geolocation Support', false, 'Not supported by browser');
+                } else {
+                    addTestResult('Browser Geolocation Support', true, 'Supported');
+                    
+                    await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(
+                            (position) => {
+                                addTestResult('Browser Location Access', true, 
+                                    `Got coordinates: ${position.coords.latitude}, ${position.coords.longitude}`);
+                                resolve(position);
+                            },
+                            (error) => {
+                                let errorMsg = 'Unknown error';
+                                switch(error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        errorMsg = 'Permission denied';
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        errorMsg = 'Position unavailable';
+                                        break;
+                                    case error.TIMEOUT:
+                                        errorMsg = 'Request timeout';
+                                        break;
+                                }
+                                addTestResult('Browser Location Access', false, errorMsg);
+                                resolve(null);
+                            }
+                        );
+                    });
+                }
+            } catch (e) {
+                addTestResult('Browser Geolocation', false, e.message);
+            }
+            
+            // Test 2: Comprehensive Location API
+            try {
+                statusDiv.textContent = 'Testing comprehensive location API...';
+                
+                const response = await fetch('/api/location/comprehensive', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        latitude: 37.2707,
+                        longitude: -76.7075
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addTestResult('Comprehensive Location API', true, 'API responding');
+                    
+                    if (data.primary_location) {
+                        const loc = data.primary_location;
+                        addTestResult('Location Detection', true, 
+                            `Found: ${loc.city}, ${loc.state} (${loc.country})`);
+                        
+                        // Check if it correctly identified Williamsburg
+                        if (loc.city && loc.city.toLowerCase().includes('williamsburg')) {
+                            addTestResult('Williamsburg Detection', true, 'Correctly identified Williamsburg, VA');
+                        } else {
+                            addTestResult('Williamsburg Detection', false, 
+                                `Got ${loc.city} instead of Williamsburg`);
+                        }
+                        
+                        resultDiv.style.display = 'block';
+                        resultDiv.textContent = JSON.stringify(data, null, 2);
+                    } else {
+                        addTestResult('Location Detection', false, 'No primary location in response');
+                    }
+                } else {
+                    addTestResult('Comprehensive Location API', false, `HTTP ${response.status}`);
+                }
+            } catch (e) {
+                addTestResult('Comprehensive Location API', false, e.message);
+            }
+            
+            // Test 3: IP-based location
+            try {
+                statusDiv.textContent = 'Testing IP-based location...';
+                
+                const response = await fetch('/api/location/from-ip', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addTestResult('IP Location API', true, 
+                        `Got location: ${data.city || 'Unknown'}, ${data.state || 'Unknown'}`);
+                } else {
+                    addTestResult('IP Location API', false, `HTTP ${response.status}`);
+                }
+            } catch (e) {
+                addTestResult('IP Location API', false, e.message);
+            }
+            
+            // Test 4: Reverse Geocoding
+            try {
+                statusDiv.textContent = 'Testing reverse geocoding for Williamsburg...';
+                
+                const response = await fetch('/api/location/reverse-geocode', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        latitude: 37.2707,
+                        longitude: -76.7075
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addTestResult('Reverse Geocoding', true, 
+                        `Got: ${data.city}, ${data.state} ${data.zip_code || ''}`);
+                } else {
+                    addTestResult('Reverse Geocoding', false, `HTTP ${response.status}`);
+                }
+            } catch (e) {
+                addTestResult('Reverse Geocoding', false, e.message);
+            }
+            
+            statusDiv.className = 'status success';
+            statusDiv.textContent = 'All tests completed!';
+        }
+        
+        testBtn.addEventListener('click', () => {
+            testBtn.disabled = true;
+            testLocation().finally(() => {
+                testBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
